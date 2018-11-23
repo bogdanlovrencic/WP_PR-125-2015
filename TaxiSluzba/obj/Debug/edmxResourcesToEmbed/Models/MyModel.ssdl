@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Dispeceri">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Ime" Type="varchar" MaxLength="50" />
+    <Property Name="Prezime" Type="varchar" MaxLength="50" />
+    <Property Name="Korisnicko_ime" Type="varchar" MaxLength="50" />
+    <Property Name="Lozinka" Type="varchar" MaxLength="50" />
+    <Property Name="Pol" Type="nchar" MaxLength="10" />
+    <Property Name="JMBG" Type="varchar" MaxLength="50" />
+    <Property Name="Telefon" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Uloga" Type="varchar" MaxLength="50" />
+    <Property Name="Tipovi_voznje" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="Dispeceri" EntityType="Self.Dispeceri" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

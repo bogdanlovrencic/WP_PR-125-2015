@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+<body>
+    <form action="/User/Login" method="post">
+        <table>
+            <tr>
+                <td>Unesite korisnicko ime:</td>
+                <td><input type="text" name="user"/> </td>
+            </tr>
+            
+            <tr>
+                <td>Unesite lozinku:</td>
+                <td> <input type="password" name="pass"/></td>
+            </tr>
+           <tr>
+               <td colspan="2" align="center"><input type="submit" value="Log in"/> </td>
+           </tr>
+        </table>
+    </form>
+
+</body>
+

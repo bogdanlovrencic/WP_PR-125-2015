@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Registracija korisnika</h2>
+<body>
+      <p> <a href="\User\prijava">Prijava</a> </p>
+        <form action="\User\AddUser" method="post">
+            <table border="1"> 
+                <tr>
+                    <td>Ime:</td>
+                    <td>
+                        <input type="text" name="ime" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Prezime:</td>
+                    <td>
+                        <input type="text" name="prezime" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Korisnicko ime:</td>
+                    <td>
+                        <input type="text" name="korisnickoIme" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lozinka:</td>
+                    <td>
+                        <input type="password" name="lozinka" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pol:</td>
+                    <td>
+                        <select name="pol">
+                            <option value="MUSKI">MUSKI</option>
+                            <option value="ZENSKI">ZENSKI</option>
+                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>JMBG:</td>
+                    <td>
+                        <input type="text" name="jmbg" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kontakt telefon:</td>
+                    <td>
+                        <input type="text" name="telefon" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <input type="text" name="email" />
+                    </td>
+                </tr>           
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="Registruj se"/>    
+                    </td>   
+                </tr>
+            </table>  
+        </form>  
+   
+</body>
+

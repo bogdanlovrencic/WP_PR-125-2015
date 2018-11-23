@@ -1,0 +1,18 @@
+﻿@using TaxiSluzba.Models
+@{
+    ViewBag.Title = "RegistrationResult";
+}
+
+<h2>Registrovani korisnici</h2>
+ 
+<p> @ViewBag.Message </p>
+
+@foreach (Korisnik k in ViewBag.RegistrovaniKor)
+{
+    <td>@k.KorisnickoIme</td>
+   
+    <br />
+}
+
+<p><a href="\User\prijava">Prijava</a></p>
+<br />
