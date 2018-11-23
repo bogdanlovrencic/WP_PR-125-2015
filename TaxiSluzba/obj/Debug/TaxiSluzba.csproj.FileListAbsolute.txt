@@ -243,9 +243,6 @@ D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\bin\Microsoft.Owin.Secur
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.dll
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.pdb
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.csprojResolveAssemblyReference.cache
-C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\obj\Debug\TaxiSluzba.csprojResolveAssemblyReference.cache
-C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\obj\Debug\TaxiSluzba.dll
-C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\obj\Debug\TaxiSluzba.pdb
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\ApplicationInsights.config
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\roslyn\csc.exe
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -325,3 +322,5 @@ C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\Microso
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\obj\Debug\TaxiSluzba.dll
+C:\Users\Bogdan Lovrencic\Documents\GitHub\WP_PR-125-2015\TaxiSluzba\obj\Debug\TaxiSluzba.pdb
