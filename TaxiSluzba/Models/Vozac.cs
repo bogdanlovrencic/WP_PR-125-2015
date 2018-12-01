@@ -11,6 +11,11 @@ namespace TaxiSluzba.Models
         public Automobil Auto { get; set; }
         public bool slobodan;
 
+        public Vozac()
+        {
+
+        }
+
         public Vozac(Korisnik korisnik,Lokacija lokacija,Automobil auto)
         {
             Ime = korisnik.Ime;

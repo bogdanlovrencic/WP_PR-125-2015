@@ -1,7 +1,342 @@
-﻿
-@{
-    ViewBag.Title = "Dispecer";
-}
+﻿<html>
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
 
-<h2>Dispecer</h2>
+            /* Style the buttons that are used to open the tab content */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
 
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                    background-color: #ccc;
+                }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+    </style>
+    <script>
+        function openCity(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</head>
+<body>
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'KreirajVozaca')">Kreiraj vozaca</button>
+        <button class="tablinks" onclick="openCity(event, 'KreirajVoznju')">Kreiraj voznju</button>
+        <button class="tablinks" onclick="openCity(event, 'DodeliVoznju')">Dodeli voznju</button>
+        <button class="tablinks" onclick="openCity(event, 'SpisakVoznji')">Spisak voznji</button>
+    </div>
+
+    <div id="KreirajVozaca" class="tabcontent">
+        <form action="/User/KreirajVozaca" method="post">
+            <table>
+                <tr>
+                    <td>Korisnicko ime:</td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="username"><span class="text-danger field-validation-error" data-valmsg-for="username" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Lozinka: </td>
+                    <td><input type="password" data-val="true" data-val-length="Najmanje 3 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="password"> <span class ="text-danger field-validation-error" data-valmsg-for="password" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Ime: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="ime"> <span class ="text-danger field-validation-error" data-valmsg-for="ime" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Prezime: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="prezime"> <span class="text-danger field-validation-error" data-valmsg-for="prezime" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Pol: </td>
+                    <td align="left">
+                        <select name="pol">
+                            <option value="MUSKI">Muski</option>
+                            <option value="ZENSKI">Zenski</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>JMBG: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 13 karaktera" data-val-length-max="20" data-val-length-min="13" data-val-required="*" name="jmbg"><span class="text-danger field-validation-error" data-valmsg-for="jmbg" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Kontakt telefon: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 9 karaktera" data-val-length-max="20" data-val-length-min="9" data-val-required="*" name="telefon"><span class="text-danger field-validation-error" data-valmsg-for="telefon" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Email: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 5 karaktera" data-val-length-max="20" data-val-length-min="5" data-val-required="*" name="email"> <span class="text-danger field-validation-error" data-valmsg-for="email" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Godiste automobila: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 4 karaktera" data-val-length-max="20" data-val-length-min="4" data-val-required="*" name="godisteAuta"><span class="text-danger field-validation-error" data-valmsg-for="godisteAuta" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Registracija automobila: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 3 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="regAuta"><span class="text-danger field-validation-error" data-valmsg-for="regAuta" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Broj automobila: </td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karaktera" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="brAuta"><span class="text-danger field-validation-error" data-valmsg-for="brAuto" data-valmsg-replace="true"/></td>
+                </tr>
+                <tr>
+                    <td>Tip automobila: </td>
+                    <td align="left">
+                        <select name="tipAuta">
+                            <option value="PUTNICKI_AUTOMOBIL">Putnicki automobil</option>
+                            <option value="KOMBI">Kombi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Kreiraj vozaca"></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+    <div id="KreirajVoznju" class="tabcontent">
+        <form action="/User/KreirajVoznju" method="post">
+            <table>
+                <tr>
+                    <td>Ulica: </td>
+                    <td><input type="text" name="ulica"></td>
+                </tr>
+                <tr>
+                    <td>Broj: </td>
+                    <td><input type="text" name="broj"></td>
+                </tr>
+                <tr>
+                    <td>Grad: </td>
+                    <td><input type="text" name="grad"></td>
+                </tr>
+                <tr>
+                    <td>Postanski broj: </td>
+                    <td><input type="text" name="postanskiBroj"></td>
+                </tr>
+                <tr>
+                    <td>Tip prevoza: </td>
+                    <td align="left">
+                        <select name="tipPrevoza">
+                            <option value="PUTNICKI_AUTOMOBIL">Putnicki automobil</option>
+                            <option value="KOMBI">Kombi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Slobodni vozaci:</td>
+                    <td align="left">
+                        <select name="izabraniVozac">
+                            @{
+                                foreach (TaxiSluzba.Models.Vozac v in TaxiSluzba.Models.DataBase.vozaci.Values)
+                                {
+                                    if (v.slobodan == true)
+                                    {
+                                        <option value="@v.KorisnickoIme">@v.KorisnickoIme, @v.Auto.tipAutomobila.ToString()</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Kreiraj voznju" onclick="alert('Voznja je dodeljena vozacu')"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id="DodeliVoznju" class="tabcontent">
+        <h2> Dodela voznje </h2>
+        <h4> Spisak voznji na cekanju</h4>
+        <form action="/User/DodeliVoznjuVozacu" method="post">
+            <select name="voznja">
+                @{
+                    foreach (TaxiSluzba.Models.Voznja v in TaxiSluzba.Models.DataBase.sveVoznje.Values)
+                    {
+                        if (v.Status == TaxiSluzba.Models.StatusVoznje.KREIRANA_NA_CEKANJU)
+                        {
+                            <option value="@v.DatumIvremePorudz.ToString()">@v.Musterija.KorisnickoIme - @v.DolaznaLokacija.Adress.Ulica @v.DolaznaLokacija.Adress.Broj, @v.DolaznaLokacija.Adress.Grad, @v.DolaznaLokacija.Adress.PostanskiBroj - @v.TipAuta.ToString() </option>
+                        }
+                    }
+                }
+            </select>
+            <h4> Spisak slobodnih vozaca</h4>
+            <select name="slobodanVozac">
+                @{
+                    foreach (TaxiSluzba.Models.Vozac v in TaxiSluzba.Models.DataBase.vozaci.Values)
+                    {
+                        if (v.slobodan == true)
+                        {
+                            <option value="@v.KorisnickoIme">@v.KorisnickoIme - @v.Auto.tipAutomobila.ToString() </option>
+                        }
+                    }
+                }
+            </select>
+            <br/>
+            <input type="submit" value="Dodeli voznju" onclick="alert('Voznja je uspesno dodeljena vozacu')">
+        </form>
+    </div>
+
+    <div id="SpisakVoznji" class="tabcontent">
+        <h4>Spisak svih voznji u sistemu</h4>
+        <table border="1">
+            <tr>
+                <td><b>Datum i vreme</b></td>
+                <td><b>Musterija</b></td>
+                <td><b>Dispecer</b></td>
+                <td><b>Vozac</b></td>
+                <td><b>Status voznje</b></td>
+            </tr>
+            @foreach (TaxiSluzba.Models.Voznja v in TaxiSluzba.Models.DataBase.sveVoznje.Values)
+            {
+                <tr>
+                    <td>@v.DatumIvremePorudz.ToString()</td>
+                    <td align="center">@v.Musterija.KorisnickoIme</td>
+                    <td align="center">@v.dispecer.KorisnickoIme</td>
+                    <td align="center">@v.vozac.KorisnickoIme</td>
+                    <td>@v.Status.ToString()</td>
+                    <td>
+                        <form action="/User/DetaljiVoznje" method="post">
+                            <input type="hidden" name="vozac" value="@v.vozac.KorisnickoIme">
+                            <input type="hidden" name="datumVoznje" value="@v.DatumIvremePorudz.ToString()">
+                            <input type="submit" value="Detalji">
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table> 
+        
+        <form action="/User/Filtriranje" method="post">
+            <table>
+                <tr>
+                    <td>Filtriraj:</td>
+                    <td>
+                        <select name="statusVoznje">
+                            <option value="KREIRANA_NA_CEKANJU">Kreirana, na cekanju</option>
+                            <option value="FORMIRANA">Formirana</option>
+                            <option value="OBRADJENA">Obradjena</option>
+                            <option value="PRIHVACENA">Prihvacena</option>
+                            <option value="U_TOKU">U toku</option>
+                            <option value="OTKAZANA">Otkazana</option>
+                            <option value="NEUSPESNA">Neuspesna</option>
+                            <option value="USPESNA">Uspesna</option>
+                        </select>
+                    </td>
+                    <td><input type="submit" value="Filtriraj"></td>
+                </tr>
+            </table>
+        </form>
+
+        <form action="/User/Sortiranje" method="post">
+            <table>
+                <tr>
+                    <td>Sortiraj po:</td>
+                    <td>
+                        <select name="sortirajPo">
+                            <option value="datumu">Datumu</option>
+                            <option value="oceni">Oceni</option>
+                        </select>
+                    </td>
+                    <td><input type="submit" value="Sortiraj"></td>
+                </tr>
+            </table>
+        </form>
+
+        <form action="/User/PretragaDispecer" method="post">
+            <table>
+                <tr>
+                    <td>Pretraga po datumu:</td>
+                    <td><input type="text" name="datumOd"></td>
+                    <td><input type="text" name="datumDo"></td>
+                </tr>
+                <tr>
+                    <td>Pretraga po oceni:</td>
+                    <td>
+                        <select name="ocenaOd">
+                            <option value="NULA"></option>
+                            <option value="JEDAN">1</option>
+                            <option value="DVA">2</option>
+                            <option value="TRI">3</option>
+                            <option value="CETIRI">4</option>
+                            <option value="PET">5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="ocenaDo">
+                            <option value="NULA"></option>
+                            <option value="JEDAN">1</option>
+                            <option value="DVA">2</option>
+                            <option value="TRI">3</option>
+                            <option value="CETIRI">4</option>
+                            <option value="PET">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pretraga po ceni:</td>
+                    <td><input type="text" name="cenaOd"></td>
+                    <td><input type="text" name="cenaDo"></td>
+                </tr>
+                <tr>
+                    <td>Pretraga vozaca:</td>
+                    <td><input type="text" name="imeVozaca"></td>
+                    <td><input type="text" name="prezimeVozaca"></td>
+                </tr>
+                <tr>
+                    <td>Pretraga musterije:</td>
+                    <td><input type="text" name="imeMusterije"></td>
+                    <td><input type="text" name="prezimeMusterije"></td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center"><input type="submit" value="Pretraga"></td>
+                </tr>
+            </table>
+          </form>
+    </div>
+
+</body>
+</html>

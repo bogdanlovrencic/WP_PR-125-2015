@@ -1,0 +1,41 @@
+﻿@model List<TaxiSluzba.Models.Voznja> 
+@{
+    ViewBag.Title = "RezultatFiltriranja";
+}
+
+<html>
+    <head>
+        <script>
+                function goBack() {
+                    window.history.back();
+                }
+        </script>
+    </head>
+    <body>
+        <h2>Rezultat filtriranja</h2>
+        <table border="1">
+            <tr>
+                <td><b>Datum i vreme</b></td>
+                <td><b>Mesto</b></td>
+                <td><b>Tip automobila</b></td>
+                <td><b>Status voznje</b></td>
+                <td><b>Komentar</b></td>
+                <td><b>Ocena</b></td>
+            </tr>
+            @foreach (TaxiSluzba.Models.Voznja v in Model)
+            {
+                <tr>
+                    <td>@v.DatumIvremePorudz.ToString()</td>
+                    <td>@v.DolaznaLokacija.Adress.Ulica @v.DolaznaLokacija.Adress.Broj, @v.DolaznaLokacija.Adress.Grad</td>
+                    <td>@v.TipAuta.ToString()</td>
+                    <td>@v.Status.ToString()</td>
+                    <td align="center">@v.komentar.Opis</td>
+                    <td align="center">@v.komentar.OcenaVoznje.ToString()</td>
+                </tr>
+            }
+        </table>
+        <button onclick="goBack()">Nazad</button>
+    </body>
+</html>
+
+

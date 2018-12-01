@@ -18,6 +18,8 @@ namespace TaxiSluzba.Models
         public StatusVoznje Status { get; set; }
         public Komentar komentar { get; set; }
 
+        public Voznja() { }
+
         public Voznja(DateTime datumVreme,Lokacija lokacijaZaTaxi,TipAutomobila tipAuta,Musterija musterija)
         {
             DatumIvremePorudz = datumVreme;
@@ -26,5 +28,7 @@ namespace TaxiSluzba.Models
             Musterija = musterija;
            
         }
+
+        
     }
 }

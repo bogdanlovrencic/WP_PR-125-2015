@@ -7,7 +7,7 @@ namespace TaxiSluzba.Models
 {
     public enum TipAutomobila
     {
-        PUTNICKO_VOZILO,
+        PUTNICKI_AUTOMOBIL,
         KOMBI
     }
 }

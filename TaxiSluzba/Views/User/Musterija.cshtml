@@ -73,6 +73,46 @@
             <button class="tablinks" onclick="openCity(event, 'Izmena')">Izmena</button>
             <button class="tablinks" onclick="openCity(event, 'SpisakVoznji')">Spisak voznji</button>
         </div>
+
+        <div id="NaruciVoznju" class="tabcontent">
+            <form action="/User/PoruciVoznju" method="post">
+                <table>
+                    <tr>
+                        <td>Korisnicko ime: </td>
+                        <td><input type="text" readonly name="korisnickoIme" value=@Model.KorisnickoIme></td>
+                    </tr>
+                    <tr>
+                        <td>Ulica: </td>
+                        <td><input type="text" name="ulica"></td>
+                    </tr>
+                    <tr>
+                        <td>Broj: </td>
+                        <td><input type="text" name="broj"></td>
+                    </tr>
+                    <tr>
+                        <td>Grad: </td>
+                        <td><input type="text" name="grad"></td>
+                    </tr>
+                    <tr>
+                        <td>Postanski broj: </td>
+                        <td><input type="text" name="postanskiBroj"></td>
+                    </tr>
+                    <tr>
+                        <td>Tip prevoza: </td>
+                        <td align="left">
+                            <select name="tipPrevoza">
+                                <option value="PUTNICKI_AUTOMOBIL">Putnicki automobil</option>
+                                <option value="KOMBI">Kombi</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" value="Posalji"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
         <div id="Profil" class="tabcontent">
             <table>
                 <tr>
@@ -115,7 +155,7 @@
                 <table>
                     <tr>
                         <td>Korisnicko ime:</td>
-                        <td><input type="text" name="user" readonly value=@Model.KorisnickoIme></td>
+                        <td><input type="text" name="username" readonly value=@Model.KorisnickoIme></td>
                     </tr>
                     <tr>
                         <td>Lozinka: </td>
@@ -156,6 +196,143 @@
                 </table>
             </form>
         </div>
+
+        <div id="SpisakVoznji" class="tabcontent">
+            <table border="1" id="spisakVoznji">
+                <tr>
+                    <td>Datum i vreme</td>
+                    <td>Mesto</td>
+                    <td>Tip automobila</td>
+                    <td>Status voznje</td>
+                    <td>Komentar</td>
+                    <td>Ocena</td>
+                </tr>
+                @{
+                    foreach (TaxiSluzba.Models.Voznja v in TaxiSluzba.Models.DataBase.registrovaniKorisnici[Model.KorisnickoIme].voznje)
+                    {
+                        if (Model.KorisnickoIme == v.Musterija.KorisnickoIme)
+                        {
+                            <tr>
+                                <td>@v.DatumIvremePorudz.ToString()</td>
+                                <td>@v.DolaznaLokacija.Adress.Ulica @v.DolaznaLokacija.Adress.Broj, @v.DolaznaLokacija.Adress.Grad, @v.DolaznaLokacija.Adress.PostanskiBroj </td>
+                                <td>@v.TipAuta.ToString() </td>
+                                <td>@v.Status.ToString() </td>
+                                <td align="center">@v.komentar.Opis</td>
+                                <td>@v.komentar.OcenaVoznje.ToString()</td>
+
+                                @if (v.Status == TaxiSluzba.Models.StatusVoznje.KREIRANA_NA_CEKANJU)
+                                {
+                                    <td>
+                                        <form action="/User/MusterijaMenjaVoznju" method="post">
+                                            <input type="submit" value="Izmeni">
+                                            <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+                                            <input type="hidden" name="datumVoznje" value="@v.DatumIvremePorudz.ToString()">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="/User/MusterijaOtkazujeVoznju" method="post">
+                                            <input type="submit" value="Otkazi">
+                                            <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+                                            <input type="hidden" name="datumVoznje" value="@v.DatumIvremePorudz.ToString()">
+                                        </form>
+                                    </td>
+                                }
+                                @if (v.Status == TaxiSluzba.Models.StatusVoznje.USPESNA)
+                                {
+                                    <td>
+                                        <form action="/User/KomentarUspesno" method="post">
+                                            <input type="submit" value="Komentar">
+                                            <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+                                            <input type="hidden" name="datumVoznje" value="@v.DatumIvremePorudz.ToString()">
+                                        </form>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+            <form action="/User/Filtriranje" method="post">
+                <table>
+                    <tr>
+                        <td>Filtriraj:</td>
+                        <td>
+                            <select name="statusVoznje">
+                                <option value="KREIRANA_NA_CEKANJU">Kreirana, na cekanju</option>
+                                <option value="FORMIRANA">Formirana</option>
+                                <option value="OBRADJENA">Obradjena</option>
+                                <option value="PRIHVACENA">Prihvacena</option>
+                                <option value="U_TOKU">U toku</option>
+                                <option value="OTKAZANA">Otkazana</option>
+                                <option value="NEUSPESNA">Neuspesna</option>
+                                <option value="USPESNA">Uspesna</option>
+                            </select>
+                        </td>
+                        <td><input type="submit" value="Filtriraj"></td>
+                    </tr>
+                </table>
+                <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+            </form>
+
+            <form action="/User/Sortiranje" method="post">
+                <table>
+                    <tr>
+                        <td>Sortiraj po:</td>
+                        <td>
+                            <select name="sortirajPo">
+                                <option value="datumu">Datumu</option>
+                                <option value="oceni">Oceni</option>
+                            </select>
+                        </td>
+                        <td><input type="submit" value="Sortiraj"></td>
+                    </tr>
+                </table>
+                <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+            </form>
+
+            <form action="/User/PretragaMusterija" method="post">
+                <table>
+                    <tr>
+                        <td>Pretraga po datumu:</td>
+                        <td><input type="text" name="datumOd"></td>
+                        <td><input type="text" name="datumDo"></td>
+                    </tr>
+                    <tr>
+                        <td>Pretraga po oceni:</td>
+                        <td>
+                            <select name="ocenaOd">
+                                <option value="NULA"></option>
+                                <option value="JEDAN">1</option>
+                                <option value="DVA">2</option>
+                                <option value="TRI">3</option>
+                                <option value="CETIRI">4</option>
+                                <option value="PET">5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="ocenaDo">
+                                <option value="NULA"></option>
+                                <option value="JEDAN">1</option>
+                                <option value="DVA">2</option>
+                                <option value="TRI">3</option>
+                                <option value="CETIRI">4</option>
+                                <option value="PET">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pretraga po ceni:</td>
+                        <td><input type="text" name="cenaOd"></td>
+                        <td><input type="text" name="cenaDo"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center"><input type="submit" value="Pretraga"></td>
+                    </tr>
+                </table>
+                <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
+            </form>
+        </div>
+
         <form action="/User/LogOut">
             <input type="submit" value="Odjavi se">
         </form>

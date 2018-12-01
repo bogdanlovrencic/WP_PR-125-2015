@@ -9,17 +9,17 @@ namespace TaxiSluzba.Models
     {
         private string ulica;
         private string broj;
-        private string pozivniBroj;
+        private string postanskiBroj;
         private string grad;
 
 
         public Adresa() { }
 
-        public Adresa(string ul, string br, string pozBr, string grad)
+        public Adresa(string ul, string br, string grad, string postBroj)
         {
             Ulica = ul;
             Broj = br;
-            PozivniBroj = pozBr;
+            PostanskiBroj = postBroj;
             this.Grad = grad;
 
         }
@@ -50,16 +50,16 @@ namespace TaxiSluzba.Models
             }
         }
 
-        public string PozivniBroj
+        public string PostanskiBroj
         {
             get
             {
-                return pozivniBroj;
+                return postanskiBroj;
             }
 
             set
             {
-                pozivniBroj = value;
+                postanskiBroj = value;
             }
         }
 

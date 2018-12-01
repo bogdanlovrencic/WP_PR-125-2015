@@ -293,6 +293,12 @@
     <Content Include="Views\User\Dispecer.cshtml" />
     <Content Include="Views\User\Vozac.cshtml" />
     <Content Include="Views\User\Izmena.cshtml" />
+    <Content Include="Views\User\RezultatFiltriranja.cshtml" />
+    <Content Include="Views\User\MusterijaMenjaVoznju.cshtml" />
+    <Content Include="Views\User\Greska.cshtml" />
+    <Content Include="Views\User\Komentar.cshtml" />
+    <Content Include="Views\User\RezultatSortiranja.cshtml" />
+    <Content Include="Views\User\RezultatPretrage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

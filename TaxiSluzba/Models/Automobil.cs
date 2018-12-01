@@ -10,19 +10,19 @@ namespace TaxiSluzba.Models
         public Vozac vozac;
         public string Godiste { get; set; }
         public string BrRegOznake { get; set; }
-        public int TaxiId { get; set; }
+        public string TaxiId { get; set; }
         public TipAutomobila tipAutomobila { get; set; }
 
         public Automobil(){
            
         }
 
-        public Automobil(Vozac v,string god,string regOznaka,int id,TipAutomobila tip)
+        public Automobil(Vozac v,string god,string regOznaka,string taxiId,TipAutomobila tip)
         {
             vozac = v;
             Godiste = god;
             BrRegOznake = regOznaka;
-            TaxiId = id;
+            TaxiId = taxiId;
             tipAutomobila = tip;
         }
     }
