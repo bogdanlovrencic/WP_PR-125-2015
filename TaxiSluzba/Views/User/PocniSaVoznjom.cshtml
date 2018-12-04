@@ -1,0 +1,23 @@
+﻿@model TaxiSluzba.Models.Voznja
+
+@{
+    ViewBag.Title = "PocniSaVoznjom";
+}
+
+<h3>Voznja je u toku...</h3>
+<h4>Po zavrsetku voznje odaberite kako je prosla voznja!Ishod voznje:</h4><br/>
+
+<form action="/User/UspesnaVoznja" method="post">
+    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
+    <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
+    <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
+    <input type="submit" value="Uspeno">
+</form>
+
+<form action="/User/NeuspesnaVoznja" method="post">
+    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz"> 
+    <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
+    <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
+    <input type="submit" value="Neuspesno">
+</form>
+

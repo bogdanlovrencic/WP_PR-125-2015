@@ -63,6 +63,7 @@
     </script>
 </head>
 <body>
+    <h2>Dispecer</h2>
     <div class="tab">
         <button class="tablinks" onclick="openCity(event, 'KreirajVozaca')">Kreiraj vozaca</button>
         <button class="tablinks" onclick="openCity(event, 'KreirajVoznju')">Kreiraj voznju</button>
@@ -108,7 +109,7 @@
                 </tr>
                 <tr>
                     <td>Email: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 5 karaktera" data-val-length-max="20" data-val-length-min="5" data-val-required="*" name="email"> <span class="text-danger field-validation-error" data-valmsg-for="email" data-valmsg-replace="true"/></td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 10 karaktera" data-val-length-max="20" data-val-length-min="5" data-val-required="*" name="email"> <span class="text-danger field-validation-error" data-valmsg-for="email" data-valmsg-replace="true"/></td>
                 </tr>
                 <tr>
                     <td>Godiste automobila: </td>
@@ -116,7 +117,7 @@
                 </tr>
                 <tr>
                     <td>Registracija automobila: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 3 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="regAuta"><span class="text-danger field-validation-error" data-valmsg-for="regAuta" data-valmsg-replace="true"/></td>
+                    <td><input type="text" data-val="true" data-val-length="Najmanje 9 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="regAuta"><span class="text-danger field-validation-error" data-valmsg-for="regAuta" data-valmsg-replace="true"/></td>
                 </tr>
                 <tr>
                     <td>Broj automobila: </td>
@@ -190,7 +191,7 @@
     </div>
 
     <div id="DodeliVoznju" class="tabcontent">
-        <h2> Dodela voznje </h2>
+        <h3> Dodela voznje </h3>
         <h4> Spisak voznji na cekanju</h4>
         <form action="/User/DodeliVoznjuVozacu" method="post">
             <select name="voznja">
@@ -249,6 +250,7 @@
                 </tr>
             }
         </table> 
+        <br/>
         
         <form action="/User/Filtriranje" method="post">
             <table>
@@ -337,6 +339,10 @@
             </table>
           </form>
     </div>
+
+    <form action="/User/LogOut">
+        <input type="submit" value="Odjavi se">
+    </form>
 
 </body>
 </html>

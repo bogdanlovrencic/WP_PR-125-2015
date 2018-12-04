@@ -11,6 +11,10 @@ namespace TaxiSluzba.Models
         public static Dictionary<string, Korisnik> registrovaniKorisnici = new Dictionary<string, Korisnik>();
         public static Dictionary<string, Vozac> vozaci = new Dictionary<string, Vozac>();
         public static Dictionary<string, Voznja> sveVoznje = new Dictionary<string, Voznja>();
+        public static Dictionary<string, Voznja> voznjeNepoznatihDispecera = new Dictionary<string, Voznja>();
+        public static Dictionary<string, Voznja> neuspesneVoznje = new Dictionary<string, Voznja>();
+        public static Dictionary<string, Vozac> slobodniVozaci = new Dictionary<string, Vozac>();
+        public static Dictionary<string, Voznja> voznjeNaCekanju = new Dictionary<string, Voznja>();
 
         public static void UpisiRegKorisnike()
         {

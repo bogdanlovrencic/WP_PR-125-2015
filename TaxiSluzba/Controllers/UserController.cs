@@ -602,7 +602,7 @@ namespace TaxiSluzba.Controllers
 
             if (korisnickoIme != null && korisnickoIme != "-")
             {
-                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                foreach (Voznja v in DataBase.vozaci[korisnickoImeVozaca].voznje)
                 {
                     if (v.Musterija.KorisnickoIme == korisnickoIme)
                         if (v.Status.ToString() == statusVoznje)
@@ -1164,9 +1164,396 @@ namespace TaxiSluzba.Controllers
             }
 
             return View("RezultatPretrage", voznje);
-
         }
 
+        public ActionResult DetaljiVoznje(string korisickoImeVozaca, string datumVoznje)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme)
+                {
+                    if (k.Uloga == Uloga.VOZAC || k.Uloga == Uloga.DISPECER)
+                    {
+                        Voznja voznja = new Voznja();
+                        Korisnik korisnik = new Korisnik("-", "-", "-", "-", Pol.MUSKI, "-", "-", "-");
+                        Musterija m = new Musterija("-", "-", "-", "-", Pol.MUSKI, "-", "-", "-");
+                        Adresa a = new Adresa("-", "-", "-", "-");
+                        Lokacija lok = new Lokacija(1, 1, a);
+
+                        voznja = DataBase.sveVoznje[datumVoznje];
+
+                        if (voznja.dispecer == null)
+                            voznja.dispecer = new Dispecer("-", "-", "-", "-", Pol.MUSKI, "-", "-", "-");
+
+                        if (voznja.Iznos == null)
+                            voznja.Iznos = "-";
+
+                        if (voznja.komentar == null)
+                            voznja.komentar = new Komentar("-", DateTime.Now, korisnik, voznja, OcenaVoznje.NULA);
+
+                        if (voznja.Musterija == null)
+                            voznja.Musterija = new Musterija("-", "-", "-", "-", Pol.MUSKI, "-", "-", "-");
+
+                        if (voznja.Odrediste == null)
+                            voznja.Odrediste = lok;
+
+                        AzurirajVoznju(voznja, korisickoImeVozaca);
+
+                        return View("DetaljiVoznje", voznja);
+                    }
+                }
+            }
+
+            ViewBag.Message = "Nije moguce prikazati detalje voznje,jer se desila greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult PocniSaVoznjom(string datumVoznje,string korisnickoImeVozaca)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    Voznja voznja = new Voznja();
+
+                    foreach (Voznja v in DataBase.vozaci[korisnickoImeVozaca].voznje)
+                    {
+                        if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                        {
+                            DataBase.vozaci[korisnickoImeVozaca].slobodan = false;
+                            voznja.Status = StatusVoznje.U_TOKU;
+                            voznja = v;
+
+                            AzurirajVoznju(voznja, kor.KorisnickoIme);
+                        }
+                    }
+
+                    return View("PocniSaVoznjom",voznja);
+                }
+            }
+
+            ViewBag.Message = "Nemouce je zapoceti voznju,desila se greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult PromeniLokacijuTaksiste(string ulica,string broj,string grad,string postBroj,string korisnickoImeVozaca)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    Adresa adresa = new Adresa(ulica, broj, grad, postBroj);
+                    Lokacija l = new Lokacija(2,4,adresa);
+                    DataBase.vozaci[korisnickoImeVozaca].Lokacija = l;
+
+                    if (DataBase.slobodniVozaci.ContainsKey(korisnickoImeVozaca))
+                        DataBase.slobodniVozaci[korisnickoImeVozaca].Lokacija = l;
+
+                    ViewBag.Message = "Lokacija taksiste je uspesno promenjena.";
+                    return View("Izmena");
+                }
+            }
+
+            ViewBag.Message = "Nije moguce promeniti lokaciju taksiste,jer se dogodila neka greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult PreuzmiVoznju(string voznja,string korisnickoImeVozaca)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    Voznja vo = new Voznja();
+
+                    foreach (Korisnik ko in DataBase.registrovaniKorisnici.Values)
+                    {
+                        if (ko.Uloga == Uloga.MUSTERIJA)
+                        {
+                            foreach (Voznja v in ko.voznje)
+                            {
+                                if (v.DatumIvremePorudz.ToString() == voznja)
+                                {
+                                    if(v.Status == StatusVoznje.KREIRANA_NA_CEKANJU || v.Status == StatusVoznje.FORMIRANA)
+                                    {
+                                        v.Status = StatusVoznje.PRIHVACENA;
+                                        vo = v;
+                                        v.vozac = DataBase.vozaci[korisnickoImeVozaca];
+                                        DataBase.voznjeNaCekanju.Remove(v.DatumIvremePorudz.ToString());
+                                        DataBase.vozaci[korisnickoImeVozaca].voznje.Add(vo);
+                                        AzurirajVoznju(vo, kor.KorisnickoIme);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    DataBase.slobodniVozaci.Remove(korisnickoImeVozaca);
+
+                    return View("PocniSaVoznjom", vo);
+                }
+            }
+
+            ViewBag.Message = "Nije moguce preuzeti voznju,dogodila se greska!";
+            return View("Greska");           
+        }
+
+        [HttpPost]
+        public ActionResult UspesnaVoznja(string datumVoznje,string korImeMusterija, string korImeVozac)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    Voznja vo = new Voznja();
+                    bool postojiMusterija = false;
+
+                    if (korImeMusterija != "-")
+                    {
+                        postojiMusterija = true;
+
+                        foreach (Voznja v in DataBase.registrovaniKorisnici[korImeMusterija].voznje)
+                        {
+                            if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                v.Status = StatusVoznje.USPESNA;
+                                vo = v;
+
+                                AzurirajVoznju(vo, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+
+                    foreach(Voznja v in DataBase.vozaci[korImeVozac].voznje)
+                    {
+                        if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                        {
+                            if (v.dispecer == null)
+                            {
+                                v.dispecer = new Dispecer("-","-","-","-",Pol.MUSKI,"-","-","-");
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                            }
+
+                            v.Status = StatusVoznje.USPESNA;
+
+                            if (!postojiMusterija)
+                            {
+                                vo = v;
+                                AzurirajVoznju(vo, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+
+                    return View("UspesnaVoznja", vo);
+                }
+            }
+
+            ViewBag.Message = "Dogodila se greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult NeuspesnaVoznja(string datumVoznje,string korImeMusterija,string korImeVozac)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    Voznja v = new Voznja();
+
+                    if (korImeMusterija != "-")
+                    {
+                        foreach (Voznja vo in DataBase.registrovaniKorisnici[korImeMusterija].voznje)
+                        {
+                            if (vo.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                v = vo;
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Voznja voznja in DataBase.sveVoznje.Values)
+                        {
+                            if (voznja.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                v = voznja;
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+
+                    return View("KomentarVozacaNeuspesnaVoznja", v);
+                }
+            }
+
+            ViewBag.Message = "Nije moguce ostaviti komentar,desila se greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult ZavrsiVoznju(string ulica,string broj,string grad,string postBroj,string iznos,string datumVoznje,string usernameMusterija,string usernameVozac)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    if (usernameMusterija != "-")
+                    {
+                        foreach (Voznja v in DataBase.registrovaniKorisnici[usernameMusterija].voznje)
+                        {
+                            if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                Adresa a = new Adresa(ulica,broj,grad,postBroj);
+                                Lokacija lok = new Lokacija(2,4,a);
+                                v.Odrediste = lok;
+                                v.Iznos = iznos;
+
+                                if (v.dispecer.KorisnickoIme == "-")
+                                    DataBase.voznjeNepoznatihDispecera.Add(v.DatumIvremePorudz.ToString(), v);
+
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+
+                    foreach (Voznja v in DataBase.vozaci[usernameVozac].voznje)
+                    {
+                        if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                        {
+                            Adresa a = new Adresa(ulica,broj,grad,postBroj);
+                            Lokacija lok = new Lokacija(2, 4, a);
+                            v.Odrediste = lok;
+                            v.Iznos = iznos;
+                            AzurirajVoznju(v, kor.KorisnickoIme);
+                        }
+                    }
+
+                    DataBase.UpisiVoznje();
+
+                    ViewBag.Message = "Voznja je uspesno izvrsena.";
+                    return View("Izmena");
+                }
+            }
+
+            ViewBag.Message = "Voznja nije zavrsena,desila se greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
+        public ActionResult KomentarVozac(string comment, string datumVoznje, string usernameMusterija)
+        {
+            Korisnik kor = (Korisnik)Session["korisnik"];
+
+            if (kor == null)
+            {
+                kor = new Korisnik();
+                Session["korisnik"] = kor;
+            }
+
+            foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
+            {
+                if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
+                {
+                    if (usernameMusterija != "-")
+                    {
+                        foreach (Voznja v in DataBase.registrovaniKorisnici[usernameMusterija].voznje)
+                        {
+                            if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                v.komentar = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.JEDAN);
+                                v.Status = StatusVoznje.NEUSPESNA;
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Voznja v in DataBase.neuspesneVoznje.Values)
+                        {
+                            if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                            {
+                                Komentar kom = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.JEDAN);
+                                v.komentar = kom;
+                                v.Status = StatusVoznje.NEUSPESNA;
+                                AzurirajVoznju(v, kor.KorisnickoIme);
+                                DataBase.slobodniVozaci.Add(v.vozac.KorisnickoIme, v.vozac);
+                            }
+                        }
+                    }
+
+                    DataBase.UpisiVoznje();
+
+                    ViewBag.Message = "Voznja je neuspesno zavrsena!";
+                    return View("Greska");
+                }
+            }
+
+            ViewBag.Message = "Nije moguce postaviti komentar,desila se neka greska!";
+            return View("Greska");
+        }
+
+        [HttpPost]
         public ActionResult Error()
         {
             ViewBag.ErrorMessage = "Neuspesno registrovanje, korisnik sa unetim korisnickim imenom vec postoji!";
@@ -1186,12 +1573,10 @@ namespace TaxiSluzba.Controllers
 
         public ActionResult LogOut()
         {
-
             Session.Abandon();
             Korisnik k = new Korisnik();
             Session["korisnik"] = k;
             return View("Login");
         }
-
     }
 }

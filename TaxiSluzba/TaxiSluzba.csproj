@@ -197,6 +197,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\DispecerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -299,6 +300,10 @@
     <Content Include="Views\User\Komentar.cshtml" />
     <Content Include="Views\User\RezultatSortiranja.cshtml" />
     <Content Include="Views\User\RezultatPretrage.cshtml" />
+    <Content Include="Views\User\DetaljiVoznje.cshtml" />
+    <Content Include="Views\User\PocniSaVoznjom.cshtml" />
+    <Content Include="Views\User\UspesnaVoznja.cshtml" />
+    <Content Include="Views\User\KomentarVozacaNeuspesnaVoznja.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -313,6 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Dispecer\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
