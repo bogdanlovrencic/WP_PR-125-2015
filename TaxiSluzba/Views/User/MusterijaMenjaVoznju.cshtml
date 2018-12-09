@@ -3,40 +3,49 @@
 @{
     ViewBag.Title = "MusterijaMenjaVoznju";
 }
+<head>
+    <style>
+        body {
+            background-color:navajowhite;
+        }
 
-<h2>Izmena voznje</h2>
+    </style>
+</head>
+<body>
+        <h2>Izmena voznje</h2>
 
-<form action="/User/IzmenaVoznje" method="post">
-    <table>
-        <tr>
-            <td>Ulica:</td>
-            <td> <input type="text" name="ulica" value=@Model.DolaznaLokacija.Adress.Ulica> </td>
-        </tr>
-        <tr>
-            <td>Broj:</td>
-            <td> <input type="text" name="broj" value=@Model.DolaznaLokacija.Adress.Broj> </td>
-        </tr>
-        <tr>
-            <td>Grad:</td>
-            <td> <input type="text" name="grad" value=@Model.DolaznaLokacija.Adress.Grad> </td>
-        </tr>
-        <tr>
-            <td>Postanski broj:</td>
-            <td> <input type="text" name="postanskiBroj" value=@Model.DolaznaLokacija.Adress.PostanskiBroj> </td>
-        </tr>
-        <tr>
-            <td>Tip Automobila: </td>
-            <td align="left" value=@Model.TipAuta>
-                <select name="tipAuta">
-                    <option value="PUTNICKI_AUTOMOBIL">Putnicki automobil</option>
-                    <option value="KOMBI">Kombi</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="Izmeni" onclick="alert('Podaci su izmenjeni!')"></td>
-        </tr>
-    </table>
-    <input type="hidden" name="username" value="@Model.Musterija.KorisnickoIme">
-    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
-</form>
+        <form action="/User/IzmenaVoznje" method="post">
+            <table>
+                <tr>
+                    <td>Ulica:</td>
+                    <td> <input type="text" name="ulica" value=@Model.DolaznaLokacija.Adress.Ulica> </td>
+                </tr>
+                <tr>
+                    <td>Broj:</td>
+                    <td> <input type="text" name="broj" value=@Model.DolaznaLokacija.Adress.Broj> </td>
+                </tr>
+                <tr>
+                    <td>Grad:</td>
+                    <td> <input type="text" name="grad" value=@Model.DolaznaLokacija.Adress.Grad> </td>
+                </tr>
+                <tr>
+                    <td>Postanski broj:</td>
+                    <td> <input type="text" name="postanskiBroj" value=@Model.DolaznaLokacija.Adress.PostanskiBroj> </td>
+                </tr>
+                <tr>
+                    <td>Tip Automobila: </td>
+                    <td align="left" value=@Model.TipAuta>
+                        <select name="tipAuta">
+                            <option value="PUTNICKI_AUTOMOBIL">Putnicki automobil</option>
+                            <option value="KOMBI">Kombi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Izmeni" onclick="alert('Podaci su izmenjeni!')"></td>
+                </tr>
+            </table>
+            <input type="hidden" name="username" value="@Model.Musterija.KorisnickoIme">
+            <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
+        </form>
+    </body>

@@ -13,7 +13,7 @@
             .tab {
                 overflow: hidden;
                 border: 1px solid #ccc;
-                background-color: #f1f1f1;
+                background-color: lightgray;
             }
 
                 /* Style the buttons that are used to open the tab content */
@@ -29,12 +29,12 @@
 
                     /* Change background color of buttons on hover */
                     .tab button:hover {
-                        background-color: #ddd;
+                        background-color: lightblue;
                     }
 
                     /* Create an active/current tablink class */
                     .tab button.active {
-                        background-color: #ccc;
+                        background-color: lightsalmon;
                     }
 
             /* Style the tab content */
@@ -43,6 +43,7 @@
                 padding: 6px 12px;
                 border: 1px solid #ccc;
                 border-top: none;
+                background-color:lightsalmon;
             }
         </style>
         <script>
@@ -138,13 +139,14 @@
                          </td>
                      </tr>
                      @{
-                         if (Model.Lokacija.Adress.Grad != "NIJE_UNETO" && Model.Lokacija.Adress.Ulica != "NIJE_UNETO" && Model.Lokacija.Adress.Broj != "NIJE_UNETO" && Model.Lokacija.Adress.PostanskiBroj != "NIJE_UNETO")
+                         if (Model.Lokacija.Adress.Grad != "" && Model.Lokacija.Adress.Ulica != "" && Model.Lokacija.Adress.Broj != "" && Model.Lokacija.Adress.PostanskiBroj != "")
                          {
                              <tr>
-                                 <td>Prethodna lokacija:</td>
-                                 <td><b>@Model.Lokacija.Adress.Ulica @Model.Lokacija.Adress.Broj, @Model.Lokacija.Adress.Grad</b></td>
+                                 <td>Trenutna lokacija:</td>
+                                 <td><b>@Model.Lokacija.Adress.Ulica @Model.Lokacija.Adress.Broj  @Model.Lokacija.Adress.Grad</b></td>
                              </tr>
                          }
+                         
                      }
                  </table>
                  <input type="hidden" name="korisnickoImeVozaca" value="@Model.KorisnickoIme">
@@ -176,10 +178,10 @@
              <h4>Sve voznje na kojima ste/bili angazovani</h4>
              <table border="1">
                  <tr>
-                     <td><b>Musterija:</b></td>
-                     <td><b>Datum i vreme:</b></td>
-                     <td><b>Dispecer:</b></td>
-                     <td><b>Status voznje:</b></td>
+                     <td><b>Musterija</b></td>
+                     <td><b>Datum i vreme</b></td>
+                     <td><b>Dispecer</b></td>
+                     <td><b>Status voznje</b></td>
                  </tr>
                  @foreach (TaxiSluzba.Models.Voznja v in TaxiSluzba.Models.DataBase.vozaci[Model.KorisnickoIme].voznje)
                  {
@@ -236,6 +238,7 @@
                  </table>
                  <input type="hidden" name="korisnickoImeVozac" value="@Model.KorisnickoIme">
              </form>
+             <br/>
 
              <form action="/User/PretragaVozac" method="post">
                  <table>
@@ -277,13 +280,11 @@
                      </tr>
                  </table>
                  <input type="hidden" name="korisnickoIme" value="@Model.KorisnickoIme">
-             </form><hr>
-
-             <form action="/User/LogOut">
-                 <input type="submit" value="Odjavi se">
-             </form>
+             </form><hr>           
          </div>
-
+         <form action="/User/LogOut">
+             <input type="submit" value="Odjavi se">
+         </form>
     </body>
 </html>
 

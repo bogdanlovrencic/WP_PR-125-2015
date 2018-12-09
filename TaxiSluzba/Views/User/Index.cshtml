@@ -1,39 +1,57 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Taxi sluzba";
 }
 
-<h2>Registracija korisnika</h2>
-<body>
-      <p> <a href="\User\prijava">Prijava</a> </p>
-        <form action="\User\AddUser" method="post">
+<head>
+  <style>
+      body {
+            background-color:lightblue;        
+           }
+
+      img {
+          right:200px;
+          top:100px;        
+          position:absolute;
+         
+      }
+  
+  </style>  
+
+</head>
+<body >
+    <h2>Taxi sluzba</h2>
+    <br/>
+    <h3>Registracija korisnika</h3>
+      <p><b> <a href="\User\prijava">Prijava</a> </b></p>
+        <form action="\User\Registracija" method="post">
             <table border="1"> 
                 <tr>
-                    <td>Ime:</td>
+                    <td><b>Ime:</b></td>
                     <td>
                         <input type="text" name="ime" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Prezime:</td>
+                    <td><b>Prezime:</b></td>
                     <td>
                         <input type="text" name="prezime" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Korisnicko ime:</td>
+                    <td><b>Korisnicko ime:</b></td>
                     <td>
                         <input type="text" name="korisnickoIme" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Lozinka:</td>
+                    <td><b>Lozinka:</b></td>
                     <td>
                         <input type="password" name="lozinka" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Pol:</td>
+                    <td><b>Pol:</b></td>
                     <td>
                         <select name="pol">
                             <option value="MUSKI">Muski</option>
@@ -42,19 +60,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>JMBG:</td>
+                    <td><b>JMBG:</b></td>
                     <td>
                         <input type="text" name="jmbg" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Kontakt telefon:</td>
+                    <td><b>Kontakt telefon:</b></td>
                     <td>
                         <input type="text" name="telefon" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Email:</td>
+                    <td><b>Email:</b></td>
                     <td>
                         <input type="text" name="email" />
                     </td>
@@ -67,6 +85,8 @@
                 </tr>
             </table>  
         </form>  
-   
+
+        <img src="taxi.png" width="350" height="200"/>
+      
 </body>
 

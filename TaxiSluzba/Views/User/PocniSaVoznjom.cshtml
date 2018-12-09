@@ -4,20 +4,30 @@
     ViewBag.Title = "PocniSaVoznjom";
 }
 
-<h3>Voznja je u toku...</h3>
-<h4>Po zavrsetku voznje odaberite kako je prosla voznja!Ishod voznje:</h4><br/>
+<head>
 
-<form action="/User/UspesnaVoznja" method="post">
-    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
-    <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
-    <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
-    <input type="submit" value="Uspeno">
-</form>
+    <style>
+        body {
+            background-color:beige;
+        }
+    </style>
+</head>
+<body>
+    <h3>Voznja je u toku...</h3>
+    <h4>Po zavrsetku voznje odaberite kako je prosla voznja!</h4><br/>
+    <h4>Ishod voznje:</h4><br/>
 
-<form action="/User/NeuspesnaVoznja" method="post">
-    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz"> 
-    <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
-    <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
-    <input type="submit" value="Neuspesno">
-</form>
+    <form action="/User/UspesnaVoznja" method="post">
+        <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
+        <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
+        <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
+        <input type="submit" value="Uspeno">
+    </form>
 
+    <form action="/User/NeuspesnaVoznja" method="post">
+        <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz"> 
+        <input type="hidden" name="korImeMusterija" value="@Model.Musterija.KorisnickoIme">
+        <input type="hidden" name="korImeVozac" value="@Model.vozac.KorisnickoIme">
+        <input type="submit" value="Neuspesno">
+    </form>
+ </body>

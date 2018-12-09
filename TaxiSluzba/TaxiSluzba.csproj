@@ -197,7 +197,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\DispecerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -290,7 +289,6 @@
     <Content Include="Views\User\RegistrationError.cshtml" />
     <Content Include="Views\User\LoginError.cshtml" />
     <Content Include="Views\User\RegistrationValid.cshtml" />
-    <Content Include="Views\User\View.cshtml" />
     <Content Include="Views\User\Dispecer.cshtml" />
     <Content Include="Views\User\Vozac.cshtml" />
     <Content Include="Views\User\Izmena.cshtml" />
@@ -318,7 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Dispecer\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

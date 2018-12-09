@@ -16,66 +16,41 @@ namespace TaxiSluzba.Controllers
     {
         // GET: User
         public ActionResult Index()
-        {
-            List<Korisnik> korisnici = (List<Korisnik>)Session["korisnici"];
-           
-            if (korisnici == null)
-            {
-                korisnici = new List<Korisnik>();
-                Session["korisnici"] = korisnici;
-            }
-
-            ViewBag.Registrovani = korisnici;
+        {       
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult AddUser()
-        {
-           
-            List<Korisnik> korisnici = (List<Korisnik>)Session["korisnici"];
-            
-
-            Korisnik korisnik = (Korisnik)Session["korisnik"];
-          
-
-            if(korisnik == null)
-            {
-                korisnik = new Korisnik();
-                Session["korisnik"] = korisnik;
-            }
-
-            korisnik.Ime = Request["ime"];
-            korisnik.Prezime = Request["prezime"];
-            korisnik.KorisnickoIme = Request["korisnickoIme"];
-            korisnik.Lozinka = Request["lozinka"];
-            korisnik.Pol = (Pol)Enum.Parse(typeof(Pol),Request["pol"]);
-            korisnik.Jmbg = Request["jmbg"];
-            korisnik.KontaktTelefon = Request["telefon"];
-            korisnik.Email = Request["email"];
-           
-            
+        public ActionResult Registracija(string ime,string prezime,string korisnickoIme,string lozinka,string pol,string jmbg,string telefon,string email)
+        {                 
+            Pol p;
+            if (pol == "MUSKI")
+                p = Pol.MUSKI;
+            else
+                p = Pol.ZENSKI;
+         
             //validacija
-            if (korisnik.Ime == "" || korisnik.Prezime == "" || korisnik.KorisnickoIme == "" || korisnik.Lozinka == "" || korisnik.Jmbg == "" || korisnik.KontaktTelefon == "" || korisnik.Email == "")
+            if (ime == "" || prezime == "" || korisnickoIme == "" || lozinka == "" || jmbg == "" || telefon == "" || email == "")
             {
                 return RedirectToAction("Validation");
             }
 
             //upis registrovanog korisnika u bazu i u txt fajl
 
-            if (!DataBase.registrovaniKorisnici.ContainsKey(korisnik.KorisnickoIme))
+            if (!DataBase.registrovaniKorisnici.ContainsKey(korisnickoIme))
             {
-                DataBase.registrovaniKorisnici.Add(korisnik.KorisnickoIme, korisnik);
+                Korisnik k = new Korisnik(ime, prezime, korisnickoIme, lozinka, p, jmbg, telefon, email);
+                DataBase.registrovaniKorisnici.Add(korisnickoIme, k);
                 DataBase.UpisiRegKorisnike();
+
                 ViewBag.Message = "Uspesno ste se registrovali!";
+                return View("RegistrationResult");
             }
 
+            ViewBag.ErrorMessage = "Registracija nije uspela,jer vec postoji korisnik sa unetim korisnickim imenom!";
 
-            korisnici.Add(korisnik);
-            ViewBag.RegistrovaniKor = korisnici;
-
-            return View("RegistrationResult");
+            return View("RegistrationError");
         }
 
         [HttpPost]
@@ -130,7 +105,7 @@ namespace TaxiSluzba.Controllers
             else
             {
                 ViewBag.ErrorMessage = "Niste u mogucnosti da se prijavite, jer niste registrovani!";
-                return View("RegistrationError");
+                return View("LoginError");
             }
           
         }
@@ -602,7 +577,7 @@ namespace TaxiSluzba.Controllers
 
             if (korisnickoIme != null && korisnickoIme != "-")
             {
-                foreach (Voznja v in DataBase.vozaci[korisnickoImeVozaca].voznje)
+                foreach (Voznja v in DataBase.registrovaniKorisnici[korisnickoIme].voznje)
                 {
                     if (v.Musterija.KorisnickoIme == korisnickoIme)
                         if (v.Status.ToString() == statusVoznje)
@@ -1249,7 +1224,7 @@ namespace TaxiSluzba.Controllers
                 }
             }
 
-            ViewBag.Message = "Nemouce je zapoceti voznju,desila se greska!";
+            ViewBag.Message = "Nemoguce je zapoceti voznju,desila se greska!";
             return View("Greska");
         }
 
@@ -1269,7 +1244,7 @@ namespace TaxiSluzba.Controllers
                 if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.VOZAC)
                 {
                     Adresa adresa = new Adresa(ulica, broj, grad, postBroj);
-                    Lokacija l = new Lokacija(2,4,adresa);
+                    Lokacija l = new Lokacija(1,1,adresa);
                     DataBase.vozaci[korisnickoImeVozaca].Lokacija = l;
 
                     if (DataBase.slobodniVozaci.ContainsKey(korisnickoImeVozaca))
@@ -1551,6 +1526,193 @@ namespace TaxiSluzba.Controllers
 
             ViewBag.Message = "Nije moguce postaviti komentar,desila se neka greska!";
             return View("Greska");
+        }
+
+        public ActionResult PretragaVozac(string datumOd,string datumDo,string ocenaOd,string ocenaDo,string cenaOd,string cenaDo,string korisnickoIme)
+        {
+            List<Voznja> voznje = new List<Voznja>();
+
+            if (datumOd != "" && datumDo != "")
+            {
+                string[] pom = datumOd.Split(' ', '.', ':');
+                DateTime dateTimeOd = new DateTime(Int32.Parse(pom[2]), Int32.Parse(pom[1]), Int32.Parse(pom[0]), Int32.Parse(pom[4]), Int32.Parse(pom[5]), Int32.Parse(pom[6]));
+
+                pom = datumDo.Split(' ', '.', ':');
+                DateTime dateTimeDo = new DateTime(Int32.Parse(pom[2]), Int32.Parse(pom[1]), Int32.Parse(pom[0]), Int32.Parse(pom[4]), Int32.Parse(pom[5]), Int32.Parse(pom[6]));
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                        if (v.DatumIvremePorudz > dateTimeOd && v.DatumIvremePorudz < dateTimeDo)
+                            voznje.Add(v);
+                }
+            }
+            else if (datumOd != "")
+            {
+                string[] pom = datumOd.Split(' ', '.', ':');
+                DateTime dateTimeOd = new DateTime(Int32.Parse(pom[2]), Int32.Parse(pom[1]), Int32.Parse(pom[0]), Int32.Parse(pom[4]), Int32.Parse(pom[5]), Int32.Parse(pom[6]));
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                        if (v.DatumIvremePorudz > dateTimeOd)
+                            voznje.Add(v);
+                }
+            }
+            else if (datumDo != "")
+            {
+                string[] pom = datumDo.Split(' ', '.', ':');
+                DateTime dateTimeDo = new DateTime(Int32.Parse(pom[2]), Int32.Parse(pom[1]), Int32.Parse(pom[0]), Int32.Parse(pom[4]), Int32.Parse(pom[5]), Int32.Parse(pom[6]));
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                        if (v.DatumIvremePorudz < dateTimeDo)
+                            voznje.Add(v);
+                }
+            }
+
+            if (ocenaOd != "NULA" && ocenaDo != "NULA")
+            {
+                OcenaVoznje ocenaMin;
+                OcenaVoznje ocenaMax;
+
+                if (ocenaOd == "JEDAN")
+                    ocenaMin = OcenaVoznje.JEDAN;
+                else if (ocenaOd == "DVA")
+                    ocenaMin = OcenaVoznje.DVA;
+                else if (ocenaOd == "TRI")
+                    ocenaMin = OcenaVoznje.TRI;
+                else if (ocenaOd == "CETIRI")
+                    ocenaMin = OcenaVoznje.ČETIRI;
+                else if (ocenaOd == "PET")
+                    ocenaMin = OcenaVoznje.PET;
+                else
+                    ocenaMin = OcenaVoznje.NULA;
+
+                if (ocenaDo == "JEDAN")
+                    ocenaMax = OcenaVoznje.JEDAN;
+                else if (ocenaDo == "DVA")
+                    ocenaMax = OcenaVoznje.DVA;
+                else if (ocenaDo == "TRI")
+                    ocenaMax = OcenaVoznje.TRI;
+                else if (ocenaDo == "CETIRI")
+                    ocenaMax = OcenaVoznje.ČETIRI;
+                else if (ocenaDo == "PET")
+                    ocenaMax = OcenaVoznje.PET;
+                else
+                    ocenaMax = OcenaVoznje.NULA;
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (v.komentar.OcenaVoznje >= ocenaMin && v.komentar.OcenaVoznje <= ocenaMax)
+                            voznje.Add(v);
+                    }
+                }              
+            }
+            else if (ocenaOd != "NULA")
+            {
+                OcenaVoznje ocenaMin;
+
+                if (ocenaOd == "JEDAN")
+                    ocenaMin = OcenaVoznje.JEDAN;
+                else if (ocenaOd == "DVA")
+                    ocenaMin = OcenaVoznje.DVA;
+                else if (ocenaOd == "TRI")
+                    ocenaMin = OcenaVoznje.TRI;
+                else if (ocenaOd == "CETIRI")
+                    ocenaMin = OcenaVoznje.ČETIRI;
+                else if (ocenaOd == "PET")
+                    ocenaMin = OcenaVoznje.PET;
+                else
+                    ocenaMin = OcenaVoznje.NULA;
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (v.komentar.OcenaVoznje >= ocenaMin)
+                            voznje.Add(v);
+                    }
+                }
+            }
+            else if (ocenaDo != "NULA")
+            {
+                OcenaVoznje ocenaMax;
+
+                if (ocenaDo == "JEDAN")
+                    ocenaMax = OcenaVoznje.JEDAN;
+                else if (ocenaDo == "DVA")
+                    ocenaMax = OcenaVoznje.DVA;
+                else if (ocenaDo == "TRI")
+                    ocenaMax = OcenaVoznje.TRI;
+                else if (ocenaDo == "CETIRI")
+                    ocenaMax = OcenaVoznje.ČETIRI;
+                else if (ocenaDo == "PET")
+                    ocenaMax = OcenaVoznje.PET;
+                else
+                    ocenaMax = OcenaVoznje.NULA;
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (v.komentar.OcenaVoznje <= ocenaMax)
+                            voznje.Add(v);
+                    }
+                }
+            }
+
+            if (cenaOd != "" && cenaDo != "")
+            {
+                int min = Int32.Parse(cenaOd);
+                int max = Int32.Parse(cenaDo);
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (Int32.Parse(v.Iznos) >= min && Int32.Parse(v.Iznos) <= max) 
+                            voznje.Add(v);
+                    }
+                }
+            }
+            else if (cenaOd != "")
+            {
+                int min = Int32.Parse(cenaOd);
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (Int32.Parse(v.Iznos) >= min)
+                            voznje.Add(v);
+                    }
+                }
+            }
+            else if (cenaDo != "")
+            {
+                int max = Int32.Parse(cenaDo);
+
+                foreach (Voznja v in DataBase.vozaci[korisnickoIme].voznje)
+                {
+                    if (v.vozac.KorisnickoIme == korisnickoIme)
+                    {
+                        PopuniPolja(v);
+                        if (Int32.Parse(v.Iznos) <= max)
+                            voznje.Add(v);
+                    }
+                }
+            }
+
+            return View("RezultatPretrage", voznje);
         }
 
         [HttpPost]

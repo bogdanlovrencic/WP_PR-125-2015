@@ -2,35 +2,43 @@
 @{
     ViewBag.Title = "Komentar";
 }
-
-<h2>Komentar</h2>
-<form action="/User/KomentarMusterije" method="post">
-    <table>
-        <tr>
-            <td>Opis: </td>
-            <td><textarea name="komentar" rows="8" cols="100"></textarea> </td>
-        </tr>
-        @if(Model.Status == TaxiSluzba.Models.StatusVoznje.USPESNA)
-        {
-            <tr>
-                <td>Ocena: </td>
-                <td align="left">
-                    <select name="ocena">
-                        <option value="JEDAN">1</option>
-                        <option value="DVA">2</option>
-                        <option value="TRI">3</option>
-                        <option value="CETIRI">4</option>
-                        <option value="PET">5</option>
-                    </select>
-                </td>
-            </tr>
+<head>
+    <style>
+        body {
+            background-color:#d5ff00;
         }
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="Ostavi komentar" onclick="alert('Komentar je ostavljen')"></td>
-        </tr>
-    </table>
-    <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
-    <input type="hidden" name="usernameMusterije" value="@Model.Musterija.KorisnickoIme">
-</form>
+    </style>
+</head>
+<body>
+    <h2>Komentar</h2>
+    <form action="/User/KomentarMusterije" method="post">
+        <table>
+            <tr>
+                <td>Opis: </td>
+                <td><textarea name="komentar" rows="8" cols="100"></textarea> </td>
+            </tr>
+            @if(Model.Status == TaxiSluzba.Models.StatusVoznje.USPESNA)
+            {
+                <tr>
+                    <td>Ocena: </td>
+                    <td align="left">
+                        <select name="ocena">
+                            <option value="JEDAN">1</option>
+                            <option value="DVA">2</option>
+                            <option value="TRI">3</option>
+                            <option value="CETIRI">4</option>
+                            <option value="PET">5</option>
+                        </select>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Ostavi komentar" onclick="alert('Komentar je ostavljen')"></td>
+            </tr>
+        </table>
+        <input type="hidden" name="datumVoznje" value="@Model.DatumIvremePorudz">
+        <input type="hidden" name="usernameMusterije" value="@Model.Musterija.KorisnickoIme">
+    </form>
+</body>
 
 
