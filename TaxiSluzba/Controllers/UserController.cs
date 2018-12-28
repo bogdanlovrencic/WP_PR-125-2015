@@ -303,7 +303,7 @@ namespace TaxiSluzba.Controllers
                     Musterija m = new Musterija(DataBase.registrovaniKorisnici[korisnickoIme].Ime, DataBase.registrovaniKorisnici[korisnickoIme].Prezime, DataBase.registrovaniKorisnici[korisnickoIme].KorisnickoIme, DataBase.registrovaniKorisnici[korisnickoIme].Lozinka, DataBase.registrovaniKorisnici[korisnickoIme].Pol, DataBase.registrovaniKorisnici[korisnickoIme].Jmbg, DataBase.registrovaniKorisnici[korisnickoIme].KontaktTelefon, DataBase.registrovaniKorisnici[korisnickoIme].Email);
                     Voznja voznja = new Voznja(DateTime.Now, lok, tipAuto, m);
                     voznja.Status = StatusVoznje.KREIRANA_NA_CEKANJU;
-                    voznja.komentar = new Komentar("-", DateTime.Now, DataBase.registrovaniKorisnici[korisnickoIme], voznja, OcenaVoznje.ČETIRI);
+                    voznja.komentar = new Komentar("-", DateTime.Now, DataBase.registrovaniKorisnici[korisnickoIme], voznja, OcenaVoznje.NULA);
 
                     DataBase.registrovaniKorisnici[korisnickoIme].voznje.Add(voznja);
                     AzurirajVoznju(voznja, k.KorisnickoIme);
@@ -840,7 +840,7 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult KreirajVoznju(string ulica, string broj, string grad, string postanskoBroj, string tipPrevoza, string izabraniVozac)
+        public ActionResult KreirajVoznju(string ulica, string broj, string grad, string postanskiBroj, string tipPrevoza, string izabraniVozac)
         {
             Korisnik kor = (Korisnik)Session["korisnik"];
 
@@ -854,7 +854,7 @@ namespace TaxiSluzba.Controllers
             {
                 if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.DISPECER)
                 {
-                    Adresa adresa = new Adresa(ulica, broj, grad, postanskoBroj);
+                    Adresa adresa = new Adresa(ulica, broj, grad, postanskiBroj);
                     Lokacija l = new Lokacija(1, 1, adresa);
 
                     TipAutomobila tip;
@@ -1288,7 +1288,7 @@ namespace TaxiSluzba.Controllers
                                     {
                                         v.Status = StatusVoznje.PRIHVACENA;
                                         vo = v;
-                                        v.vozac = DataBase.vozaci[korisnickoImeVozaca];
+                                        vo.vozac = DataBase.vozaci[korisnickoImeVozaca];
                                         DataBase.voznjeNaCekanju.Remove(v.DatumIvremePorudz.ToString());
                                         DataBase.vozaci[korisnickoImeVozaca].voznje.Add(vo);
                                         AzurirajVoznju(vo, kor.KorisnickoIme);
@@ -1400,12 +1400,13 @@ namespace TaxiSluzba.Controllers
                     }
                     else
                     {
-                        foreach (Voznja voznja in DataBase.sveVoznje.Values)
+                        foreach (Voznja voznja in DataBase.sveVoznje.Values.ToList())
                         {
                             if (voznja.DatumIvremePorudz.ToString() == datumVoznje)
                             {
                                 v = voznja;
                                 AzurirajVoznju(v, kor.KorisnickoIme);
+                                DataBase.neuspesneVoznje.Add(v.DatumIvremePorudz.ToString(), v);
                             }
                         }
                     }
@@ -1494,9 +1495,9 @@ namespace TaxiSluzba.Controllers
                     {
                         foreach (Voznja v in DataBase.registrovaniKorisnici[usernameMusterija].voznje)
                         {
-                            if (v.DatumIvremePorudz.ToString() == datumVoznje)
+                            if (datumVoznje == v.DatumIvremePorudz.ToString())
                             {
-                                v.komentar = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.JEDAN);
+                                v.komentar = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.NULA);
                                 v.Status = StatusVoznje.NEUSPESNA;
                                 AzurirajVoznju(v, kor.KorisnickoIme);
                             }
@@ -1508,7 +1509,7 @@ namespace TaxiSluzba.Controllers
                         {
                             if (v.DatumIvremePorudz.ToString() == datumVoznje)
                             {
-                                Komentar kom = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.JEDAN);
+                                Komentar kom = new Komentar(comment, DateTime.Now, v.Musterija, v, OcenaVoznje.NULA);
                                 v.komentar = kom;
                                 v.Status = StatusVoznje.NEUSPESNA;
                                 AzurirajVoznju(v, kor.KorisnickoIme);
