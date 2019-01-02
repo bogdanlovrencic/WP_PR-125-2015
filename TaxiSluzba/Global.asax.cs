@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -24,9 +25,12 @@ namespace TaxiSluzba
             string[] line;
             Pol pol;
 
-            if (File.Exists("D:\\fax\\III godina\\Web programiranje\\Projekat\\Dispeceri.txt"))
+            string path = "~/App_Data/Dispeceri.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
             {
-                StreamReader sr = new StreamReader("D:\\fax\\III godina\\Web programiranje\\Projekat\\Dispeceri.txt");
+                StreamReader sr = new StreamReader(path);
                 while ((tmp = sr.ReadLine()) != null)
                 {
                     line = tmp.Split('_');
@@ -51,9 +55,12 @@ namespace TaxiSluzba
             string temp = "";
             string[] read;
 
-            if (File.Exists("D:\\fax\\III godina\\Web programiranje\\Projekat\\RegistrovaniKorisnici.txt"))
+            string path = "~/App_Data/RegistrovaniKorisnici.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
             {
-                StreamReader srUser = new StreamReader("D:\\fax\\III godina\\Web programiranje\\Projekat\\RegistrovaniKorisnici.txt");
+                StreamReader srUser = new StreamReader(path);
                 while ((temp = srUser.ReadLine()) != "")
                 {
                     read = temp.Split('_');

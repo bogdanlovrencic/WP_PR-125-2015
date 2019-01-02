@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace TaxiSluzba.Models
 {
@@ -19,9 +20,13 @@ namespace TaxiSluzba.Models
         public static void UpisiRegKorisnike()
         {
             string upis = "";
-            if (File.Exists("D:\\fax\\III godina\\Web programiranje\\Projekat\\RegistrovaniKorisnici.txt"))
+
+            string path = "~/App_Data/RegistrovaniKorisnici.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
             {
-                StreamWriter sw = new StreamWriter("D:\\fax\\III godina\\Web programiranje\\Projekat\\RegistrovaniKorisnici.txt");
+                StreamWriter sw = new StreamWriter(path);
 
                 foreach (Korisnik k in registrovaniKorisnici.Values)
                 {
@@ -35,7 +40,8 @@ namespace TaxiSluzba.Models
             }
             else
             {
-                StreamWriter sw = new StreamWriter("D:\\fax\\III godina\\Web programiranje\\Projekat\\RegistrovaniKorisnici.txt");
+               
+                StreamWriter sw = new StreamWriter(path);
 
                 foreach (Korisnik k in registrovaniKorisnici.Values)
                 {
@@ -53,9 +59,12 @@ namespace TaxiSluzba.Models
         {
             string upis = "";
 
-            if (File.Exists(@"D:\fax\III godina\Web programiranje\Projekat\SveVoznje.txt"))
+            string path = "~/App_Data/SveVoznje.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
             {
-                StreamWriter sw = new StreamWriter(@"D:\fax\III godina\Web programiranje\Projekat\SveVoznje.txt");
+                StreamWriter sw = new StreamWriter(path);
 
                 foreach (Voznja v in sveVoznje.Values)
                 {
@@ -78,8 +87,11 @@ namespace TaxiSluzba.Models
         public static void UpisiVozace()
         {
             string s = "";
-            
-            if (File.Exists(@"D:\fax\III godina\Web programiranje\Projekat\SviVozaci.txt"))
+
+            string path = "~/App_Data/Vozaci.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
             {
                 foreach (Vozac vozac in vozaci.Values)
                 {
@@ -88,7 +100,7 @@ namespace TaxiSluzba.Models
                        + vozac.Lokacija.Adress.Ulica + "|" + vozac.Lokacija.Adress.Broj + "|" + vozac.Lokacija.Adress.Grad + "|" + vozac.Lokacija.Adress.PostanskiBroj + "_" + vozac.Uloga.ToString() + "\n");
                 }
 
-                StreamWriter sw = new StreamWriter(@"D:\fax\III godina\Web programiranje\Projekat\SviVozaci.txt");
+                StreamWriter sw = new StreamWriter(path);
                 sw.WriteLine(s);
                 sw.Close();
             }

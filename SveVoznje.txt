@@ -1,3 +1,0 @@
-28-Dec-18 02:04:42|Narodnog fronta|120|Novi Sad|21000|PUTNICKI_AUTOMOBIL|-|-|-|-|-|markisa|stefan|400|vsdfgfad|NULA|28-Dec-18 02:05:09|NEUSPESNA
-28-Dec-18 02:06:20|Rumenacka|108|Novi Sad|21000|PUTNICKI_AUTOMOBIL|Bogi|-|-|-|-|-|stefan|400|bsbsfbfsb|NULA|28-Dec-18 02:07:01|NEUSPESNA
-

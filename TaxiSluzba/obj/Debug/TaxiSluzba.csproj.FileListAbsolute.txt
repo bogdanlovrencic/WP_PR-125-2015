@@ -324,3 +324,4 @@ D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\bin\Microsoft.Owin.Secur
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.dll
 D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.pdb
+D:\fax\III godina\Web programiranje\Projekat\TaxiSluzba\obj\Debug\TaxiSluzba.csprojResolveAssemblyReference.cache

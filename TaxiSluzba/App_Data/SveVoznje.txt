@@ -1,0 +1,4 @@
+02-Jan-19 19:37:16|Rumenacka|108|Novi Sad|21000|PUTNICKI_AUTOMOBIL|mirkan|Strazilovska|2|Novi Sad|21000|-|vaksi|350||PET|02-Jan-19 19:46:46|USPESNA
+02-Jan-19 19:47:49|Bulevar Cara Lazara|120|Novi Sad|21000|PUTNICKI_AUTOMOBIL|-|-|-|-|-|ikica|vaksi|400|pokvario se auto|NULA|02-Jan-19 19:48:46|NEUSPESNA
+02-Jan-19 20:14:20|Mise Dimitrijevica|30|Novi Sad|21000|KOMBI|mirkan|Brace Ribnikara|27|Novi Sad|21000|-|nidza|250|neudobna voznja|TRI|02-Jan-19 20:18:50|USPESNA
+
