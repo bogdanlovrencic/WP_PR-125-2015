@@ -77,19 +77,19 @@
             <table>
                 <tr>
                     <td>Korisnicko ime:</td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="username"><span class="text-danger field-validation-error" data-valmsg-for="username" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="username"></td>
                 </tr>
                 <tr>
                     <td>Lozinka: </td>
-                    <td><input type="password" data-val="true" data-val-length="Najmanje 3 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="password"> <span class ="text-danger field-validation-error" data-valmsg-for="password" data-valmsg-replace="true"/></td>
+                    <td><input type="password" name="password"/></td>
                 </tr>
                 <tr>
                     <td>Ime: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="ime"> <span class ="text-danger field-validation-error" data-valmsg-for="ime" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="ime"> </td>
                 </tr>
                 <tr>
                     <td>Prezime: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karakter" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="prezime"> <span class="text-danger field-validation-error" data-valmsg-for="prezime" data-valmsg-replace="true"/></td>
+                    <td><input type="text"  name="prezime"> </td>
                 </tr>
                 <tr>
                     <td>Pol: </td>
@@ -102,27 +102,27 @@
                 </tr>
                 <tr>
                     <td>JMBG: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 13 karaktera" data-val-length-max="20" data-val-length-min="13" data-val-required="*" name="jmbg"><span class="text-danger field-validation-error" data-valmsg-for="jmbg" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="jmbg"></td>
                 </tr>
                 <tr>
                     <td>Kontakt telefon: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 9 karaktera" data-val-length-max="20" data-val-length-min="9" data-val-required="*" name="telefon"><span class="text-danger field-validation-error" data-valmsg-for="telefon" data-valmsg-replace="true"/></td>
+                    <td><input type="text"  name="telefon"></td>
                 </tr>
                 <tr>
                     <td>Email: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 10 karaktera" data-val-length-max="20" data-val-length-min="5" data-val-required="*" name="email"> <span class="text-danger field-validation-error" data-valmsg-for="email" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="email"> </td>
                 </tr>
                 <tr>
                     <td>Godiste automobila: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 4 karaktera" data-val-length-max="20" data-val-length-min="4" data-val-required="*" name="godisteAuta"><span class="text-danger field-validation-error" data-valmsg-for="godisteAuta" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="godisteAuta"></td>
                 </tr>
                 <tr>
                     <td>Registracija automobila: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 9 karaktera" data-val-length-max="20" data-val-length-min="3" data-val-required="*" name="regAuta"><span class="text-danger field-validation-error" data-valmsg-for="regAuta" data-valmsg-replace="true"/></td>
+                    <td><input type="text"  name="regAuta"></td>
                 </tr>
                 <tr>
                     <td>Broj automobila: </td>
-                    <td><input type="text" data-val="true" data-val-length="Najmanje 1 karaktera" data-val-length-max="20" data-val-length-min="1" data-val-required="*" name="brAuta"><span class="text-danger field-validation-error" data-valmsg-for="brAuto" data-valmsg-replace="true"/></td>
+                    <td><input type="text" name="brAuta"></td>
                 </tr>
                 <tr>
                     <td>Tip automobila: </td>
@@ -185,7 +185,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center"><input type="submit" value="Kreiraj voznju" onclick="alert('Voznja je dodeljena vozacu')"></td>
+                    <td colspan="2" align="center"><input type="submit" value="Kreiraj voznju"></td>
                 </tr>
             </table>
         </form>
@@ -219,7 +219,7 @@
             </select>
             <br/>
             <br/>
-            <input type="submit" value="Dodeli voznju" onclick="alert('Voznja je uspesno dodeljena vozacu')">
+            <input type="submit" value="Dodeli voznju">
         </form>
     </div>
 

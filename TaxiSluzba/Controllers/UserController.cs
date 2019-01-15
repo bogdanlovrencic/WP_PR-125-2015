@@ -16,20 +16,20 @@ namespace TaxiSluzba.Controllers
     {
         // GET: User
         public ActionResult Index()
-        {       
+        {
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Registracija(string ime,string prezime,string korisnickoIme,string lozinka,string pol,string jmbg,string telefon,string email)
-        {                 
+        public ActionResult Registracija(string ime, string prezime, string korisnickoIme, string lozinka, string pol, string jmbg, string telefon, string email)
+        {
             Pol p;
             if (pol == "MUSKI")
                 p = Pol.MUSKI;
             else
                 p = Pol.ZENSKI;
-         
+
             //validacija
             if (ime == "" || prezime == "" || korisnickoIme == "" || lozinka == "" || jmbg == "" || telefon == "" || email == "")
             {
@@ -54,11 +54,11 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string user,string pass)
+        public ActionResult Login(string user, string pass)
         {
-            
+
             Korisnik korisnik = (Korisnik)Session["korisnik"];
-          
+
 
             if (korisnik == null)
             {
@@ -99,15 +99,15 @@ namespace TaxiSluzba.Controllers
                 {
                     ViewBag.ErrorMessage = "Pogresna lozinka!";
                     return View("LoginError");
-                }     
+                }
             }
-           
+
             else
             {
                 ViewBag.ErrorMessage = "Niste u mogucnosti da se prijavite, jer niste registrovani!";
                 return View("LoginError");
             }
-          
+
         }
 
         [HttpPost]
@@ -177,6 +177,8 @@ namespace TaxiSluzba.Controllers
                     DataBase.registrovaniKorisnici[username].KontaktTelefon = telefon;
                     DataBase.registrovaniKorisnici[username].Email = email;
 
+                    DataBase.AzurirajPodatkeMusterije();
+
                     ViewBag.Message = "Podaci su uspesno izmenjeni.";
                     return View("Izmena");
                 }
@@ -189,13 +191,13 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult IzmenaVoznje(string ulica,string broj,string grad,string postanskiBroj,string tipAuta,string username,string datumVoznje)
+        public ActionResult IzmenaVoznje(string ulica, string broj, string grad, string postanskiBroj, string tipAuta, string username, string datumVoznje)
         {
-            Korisnik kor =(Korisnik)Session["korisnik"];
+            Korisnik kor = (Korisnik)Session["korisnik"];
 
             if (kor == null)
             {
-                kor= new Korisnik();
+                kor = new Korisnik();
                 Session["korisnik"] = kor;
             }
 
@@ -206,7 +208,7 @@ namespace TaxiSluzba.Controllers
                     TipAutomobila tipAutomobila;
 
                     if (tipAuta == "KOMBI")
-                        tipAutomobila = TipAutomobila.KOMBI;                  
+                        tipAutomobila = TipAutomobila.KOMBI;
                     else
                         tipAutomobila = TipAutomobila.PUTNICKI_AUTOMOBIL;
 
@@ -249,20 +251,20 @@ namespace TaxiSluzba.Controllers
 
             if (v.Odrediste == null)
             {
-                v.Odrediste = new Lokacija(1,1,new Adresa("-","-","-","-"));
+                v.Odrediste = new Lokacija(1, 1, new Adresa("-", "-", "-", "-"));
             }
 
             if (v.vozac == null)
             {
-                Korisnik k = new Korisnik("-","-","-","-",Pol.MUSKI,"-","-","-");
-                Lokacija l = new Lokacija(1,1,new Adresa("-","-","-","-"));
-                Automobil a = new Automobil(new Vozac(), "-", "-","-", TipAutomobila.PUTNICKI_AUTOMOBIL);
-                v.vozac = new Vozac(k,l,a);
+                Korisnik k = new Korisnik("-", "-", "-", "-", Pol.MUSKI, "-", "-", "-");
+                Lokacija l = new Lokacija(1, 1, new Adresa("-", "-", "-", "-"));
+                Automobil a = new Automobil(new Vozac(), "-", "-", "-", TipAutomobila.PUTNICKI_AUTOMOBIL);
+                v.vozac = new Vozac(k, l, a);
             }
 
             if (v.komentar == null)
             {
-                v.komentar = new Komentar("-",DateTime.Now,v.Musterija,v,OcenaVoznje.NULA);
+                v.komentar = new Komentar("-", DateTime.Now, v.Musterija, v, OcenaVoznje.NULA);
             }
 
             if (v.Iznos == null)
@@ -282,6 +284,12 @@ namespace TaxiSluzba.Controllers
             {
                 korisnik = new Korisnik();
                 Session["korisnik"] = korisnik;
+            }
+
+            if (korisnickoIme == "" || ulica == "" || broj == "" || grad == "" || postanskiBroj == "")
+            {
+                ViewBag.Message = "Niste popunili sva polja!";
+                return View("Greska");
             }
 
             foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
@@ -325,7 +333,7 @@ namespace TaxiSluzba.Controllers
         {
             Voznja retVoznja = new Voznja();
             retVoznja = PopuniPolja(voznja);
-           
+
             if (DataBase.sveVoznje.ContainsKey(voznja.DatumIvremePorudz.ToString()))
                 DataBase.sveVoznje[voznja.DatumIvremePorudz.ToString()] = retVoznja;
             else
@@ -353,7 +361,7 @@ namespace TaxiSluzba.Controllers
                         if (v.DatumIvremePorudz.ToString() == datumVoznje)
                         {
                             voznja = v;
-                            AzurirajVoznju(voznja,korisnik.KorisnickoIme);
+                            AzurirajVoznju(voznja, korisnik.KorisnickoIme);
                         }
                     }
 
@@ -367,7 +375,7 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult MusterijaOtkazujeVoznju(string korisnickoIme,string datumVoznje)
+        public ActionResult MusterijaOtkazujeVoznju(string korisnickoIme, string datumVoznje)
         {
             Korisnik kor = (Korisnik)Session["korisnik"];
 
@@ -392,7 +400,7 @@ namespace TaxiSluzba.Controllers
                         }
                     }
 
-                    return View("Komentar",voznja);
+                    return View("Komentar", voznja);
                 }
             }
 
@@ -402,9 +410,9 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult KomentarMusterije(string komentar,string ocena,string datumVoznje,string usernameMusterije)
+        public ActionResult KomentarMusterije(string komentar, string ocena, string datumVoznje, string usernameMusterije)
         {
-            Korisnik kor =(Korisnik) Session["korisnik"];
+            Korisnik kor = (Korisnik)Session["korisnik"];
 
             if (kor == null)
             {
@@ -447,12 +455,12 @@ namespace TaxiSluzba.Controllers
                                 {
                                     o = OcenaVoznje.ČETIRI;
                                 }
-                                else 
+                                else
                                 {
                                     o = OcenaVoznje.PET;
                                 }
 
-                                Komentar ko = new Komentar(komentar,DateTime.Now,DataBase.registrovaniKorisnici[usernameMusterije],v,o);
+                                Komentar ko = new Komentar(komentar, DateTime.Now, DataBase.registrovaniKorisnici[usernameMusterije], v, o);
                                 v.komentar = ko;
                                 AzurirajVoznju(v, kor.KorisnickoIme);
                             }
@@ -471,11 +479,11 @@ namespace TaxiSluzba.Controllers
         }
 
         [HttpPost]
-        public ActionResult KomentarUspesno(string korisnickoIme,string datumVoznje)
+        public ActionResult KomentarUspesno(string korisnickoIme, string datumVoznje)
         {
-            Korisnik kor =(Korisnik) Session["korisnik"];
+            Korisnik kor = (Korisnik)Session["korisnik"];
 
-            if(kor == null)
+            if (kor == null)
             {
                 kor = new Korisnik();
                 Session["korisnik"] = kor;
@@ -505,7 +513,7 @@ namespace TaxiSluzba.Controllers
 
         }
 
-       
+
 
         [HttpPost]
         public ActionResult Sortiranje(string sortirajPo, string korisnickoIme, string korisnickoImeVozaca)
@@ -608,11 +616,11 @@ namespace TaxiSluzba.Controllers
                 }
             }
 
-            return View("RezultatFiltriranja",voznje);
+            return View("RezultatFiltriranja", voznje);
         }
 
         [HttpPost]
-        public ActionResult PretragaMusterija(string datumOd, string datumDo, string ocenaOd, string ocenaDo,string cenaOd,string cenaDo, string korisnickoIme)
+        public ActionResult PretragaMusterija(string datumOd, string datumDo, string ocenaOd, string ocenaDo, string cenaOd, string cenaDo, string korisnickoIme)
         {
             List<Voznja> voznje = new List<Voznja>();
 
@@ -649,7 +657,7 @@ namespace TaxiSluzba.Controllers
 
             else if (datumDo != "")
             {
-                string []splitovano = datumDo.Split(' ', ',', ':');
+                string[] splitovano = datumDo.Split(' ', ',', ':');
                 DateTime DatumDo = new DateTime(Int32.Parse(splitovano[2]), Int32.Parse(splitovano[1]), Int32.Parse(splitovano[0]), Int32.Parse(splitovano[4]), Int32.Parse(splitovano[5]), Int32.Parse(splitovano[6]));
 
                 foreach (Voznja v in DataBase.registrovaniKorisnici[korisnickoIme].voznje)
@@ -699,7 +707,7 @@ namespace TaxiSluzba.Controllers
                         voznje.Add(v);
                 }
 
-             
+
             }
 
             else if (ocenaOd != "NULA")
@@ -799,6 +807,12 @@ namespace TaxiSluzba.Controllers
                 Session["korisnik"] = kor;
             }
 
+            if (username == "" || password == "" || ime == "" || prezime == "" || jmbg == "" || telefon == "" || email == "" || godisteAuta == "" || regAuta == "" || brAuta == "")
+            {
+                ViewBag.Message = "Morate popuniti sva polja da bi ste kreirali vozaca!";
+                return View("Greska");
+            }
+
             foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
             {
                 if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.DISPECER)
@@ -850,6 +864,12 @@ namespace TaxiSluzba.Controllers
                 Session["korisnik"] = kor;
             }
 
+            if (ulica == "" || broj == "" || grad == "" || postanskiBroj == "" || tipPrevoza == "" || izabraniVozac == "")
+            {
+                ViewBag.Message = "Morate popuniti sva polja!";
+                return View("Greska");
+            }
+
             foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
             {
                 if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.DISPECER)
@@ -896,6 +916,12 @@ namespace TaxiSluzba.Controllers
                 Session["korisnik"] = kor;
             }
 
+            if (voznja == null|| slobodanVozac == null)
+            {
+                ViewBag.Message = "Ne postoji voznja ili slobodni vozac!";
+                return View("Greska");
+            }
+            
             foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)
             {
                 if (k.KorisnickoIme == kor.KorisnickoIme && k.Uloga == Uloga.DISPECER)
@@ -964,7 +990,7 @@ namespace TaxiSluzba.Controllers
                 }
             }
 
-            if (ocenaOd != "" && ocenaDo != "")
+            if (ocenaOd != "NULA" && ocenaDo != "NULA")
             {
                 OcenaVoznje ocenaOD;
                 OcenaVoznje ocenaDO;
@@ -1003,7 +1029,7 @@ namespace TaxiSluzba.Controllers
                 }
             }
 
-            else if (ocenaOd != "")
+            else if (ocenaOd != "NULA")
             {
                 OcenaVoznje ocenaOD;
 
@@ -1027,7 +1053,7 @@ namespace TaxiSluzba.Controllers
                 }
             }
 
-            else if (ocenaDo != "")
+            else if (ocenaDo != "NULA")
             {
                 OcenaVoznje ocenaDO;
 
@@ -1237,6 +1263,12 @@ namespace TaxiSluzba.Controllers
             {
                 kor = new Korisnik();
                 Session["korisnik"] = kor;
+            }
+
+            if(ulica == "" || broj == "" || grad == "" || postBroj == "")
+            {
+                ViewBag.Message = "Niste popunili sva polja!";
+                return View("Greska");
             }
 
             foreach (Korisnik k in DataBase.registrovaniKorisnici.Values)

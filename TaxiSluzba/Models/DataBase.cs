@@ -105,5 +105,30 @@ namespace TaxiSluzba.Models
                 sw.Close();
             }
         }
+
+        public static void AzurirajPodatkeMusterije()
+        {
+            string upis = "";
+
+            string path = "~/App_Data/RegistrovaniKorisnici.txt";
+            path = HostingEnvironment.MapPath(path);
+
+            if (File.Exists(path))
+            {
+                StreamWriter sw = new StreamWriter(path);
+
+                foreach (Korisnik k in registrovaniKorisnici.Values)
+                {
+                    if (k.Uloga != Uloga.DISPECER)
+                    {
+                        upis += string.Format(k.Ime + "_" + k.Prezime + "_" + k.KorisnickoIme + "_" + k.Lozinka + "_" + k.Jmbg + "_" + k.Pol.ToString() + "_" + k.KontaktTelefon + "_" + k.Email + "_" + k.Uloga.ToString() + "\n");
+                    }
+                }
+                sw.WriteLine(upis);
+                sw.Close();
+
+
+            }
+        }
     }
 }
